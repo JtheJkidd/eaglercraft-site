@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Block Game</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #000; }
+    canvas { display: block; }
+    #instructions {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-family: Arial, sans-serif;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="instructions">WASD to move, Mouse to look, Click to place/break blocks</div>
+  <script src="https://cdn.jsdelivr.net/gh/mattdiamond/voxel-engine/voxel-engine.min.js"></script>
+  <script>
+    // Create a canvas and append to body
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);// Minimal voxel engine setup
+const player = {
+  pos: [0, 10, 0],
+  speed: 0.1
+};
+
+const world = {
+  size: 32,
+  blocks: {},
+  addBlock: function(x,y,z,type){
+    this.blocks[`${x},${y},${z}`] = type;
+  },
+  removeBlock: function(x,y,z){
+    delete this.blocks[`${x},${y},${z}`];
+  }
+};
+
+// Generate flat terrain
+for(let x=-16;x<16;x++){
+  for(let z=-16;z<16;z++){
+    world.addBlock(x,0,z,'grass');
+  }
+}
+
+// Minimal 3D rendering (cube representation)
+function draw(){
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.fillStyle = '#87CEEB';
+  ctx.fillRect(0,0,canvas.width,canvas.height); // sky
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+  </script>
+</body>
+</html>
